@@ -6,14 +6,15 @@
     <meta name="full-screen" content="yes"/>
     <meta name="screen-orientation" content="portrait"/>
     <meta name="viewport" content="user-scalable=no"/>  
-    
+    <link rel="stylesheet" href="css/bootstrap/css/bootstrap.min.css">
 </head>
 
-<body style="margin:0; padding:0; border:0; background-color:aliceblue">
+<body>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="https://www.facebook.com/assets.php/en_US/fbinstant.latest.js"></script>
 <script type="text/javascript">
   window.onload = function(){
+    $('.alert').hide();
     FBInstant.initializeAsync().then(function(){
     FBInstant.setLoadingProgress(100);
     FBInstant.startGameAsync().then(onStart);
@@ -21,22 +22,47 @@
   };
  
   function onStart(){
+    $('#photo').attr('src', FBInstant.player.getPhoto());
     $('#player-name').html(FBInstant.player.getName());
+    $('#player-id').html(FBInstant.player.getID());
+    $('#context-type').html(FBInstant.context.getType());
+  }
+
+  function show(){
+    $('.alert').show();
   }
 </script>
-<header style="color: black;"> 
-    <h1>Instant Games Test</h1>
-    <h2>Hello World!</h2>
-	
+<header class="navbar navbar-expand-lg navbar-dark bg-primary"> 
+  <div class="">
+      <h1 class="text-white">Instant Games Test</h1>
+  </div>
   </header>
-  <section id="info-section" style="color: black;">
-      <p>Successfully load facebook instant game!.</p>
-      <table>
+  <section>
+      <div class="alert alert-warning" role="alert">
+        Successfully load instant game.
+     </div>
+     <div class="d-flex justify-content-center">
+        <img id="photo" class="rounded-circle mx-auto d-block" alt="User Photo">
+     </div>
+    
+      <table class="table table-dark">
         <tr>
-          <th style="border: 1px solid black;background-color: gray;">Player Name</th>
-          <td id="player-name" style="border: 1px solid black; color: red;"></td>
+          <th scope="col">Player Name</th>
+          <td id="player-name"></td>
+          
+        </tr>
+        <tr>
+            <th scope="col">Player ID</th>
+            <td id="player-id"></td>
+        </tr>
+        <tr>
+            <th scope="col">Context Type</th>
+            <td id="context-type"></td>
         </tr>
       </table>
+      
+      <button type="button" class="btn btn-primary btn-lg btn-block" onclick="show()">Click</button>
+     
 	</section>
  
 </body>
