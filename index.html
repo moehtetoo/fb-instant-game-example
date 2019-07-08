@@ -13,15 +13,28 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="https://www.facebook.com/assets.php/en_US/fbinstant.latest.js"></script>
 <script type="text/javascript">
+  const randomImages = [
+        'img/fool.jpg',
+        'img/hand.jpg',
+        'img/lol.png',
+        'img/respect.jpg',
+        'img/heart.jpg',
+        'img/fuck.jpg'
+      ];
   window.onload = function(){
-    $('.alert').hide();
+    $('#result').hide();
+    this.checkFont();
     FBInstant.initializeAsync().then(function(){
-    FBInstant.setLoadingProgress(100);
+      for (let i in randomImages) {
+          // When preloading assets, make sure to report the progress
+          FBInstant.setLoadingProgress(i / randomImages.length * 100);
+        }
     FBInstant.startGameAsync().then(onStart);
   });
   };
  
   function onStart(){
+    
     $('#photo').attr('src', FBInstant.player.getPhoto());
     $('#player-name').html(FBInstant.player.getName());
     $('#player-id').html(FBInstant.player.getID());
@@ -29,8 +42,50 @@
   }
 
   function show(){
-    $('.alert').show();
+    $('#result').height(30).width(30);
+    var screenWidth = $('#result').parent().width()/0.5;
+    var screenHeight = screen.height/0.5;
+    
+    var image;
+    if (FBInstant.player.getName() === "Tweter") {
+      image = 'img/heart.png';
+    } else {
+      
+      image = randomImages[Math.floor(Math.random()*randomImages.length)];
+      $('#result').attr('src',image);
+    }
+    $('#result').show();
+    $("#result").animate({
+      left: '250px',
+      height: '+='+screenHeight+'px',
+      width: '+='+screenWidth/4+'px',
+      opacity: '0.4'
+
+    },"slow");
+    $("#result").animate({
+      width: '+='+screenWidth+2+'px',
+      opacity: '0.7'
+    },"slow");
+    $("#result").animate({
+      width: '+='+screenWidth+'px',
+      opacity: '0.9'
+    },"slow");
   }
+
+  function checkFont(){
+    const el = document.createElement('canvas');
+    const ctx = el.getContext("2d");
+    const kaWidth = ctx.measureText('က').width;
+    const patSintWidth = ctx.measureText('က္က').width;
+
+    if (kaWidth === patSintWidth) {
+      $('#main_label').html('သင့်ကို လူတွေ ပြုမူချင်တဲ့ ပုံစံက ဘယ်လို ပုံစံလဲ။  🤡');
+    }else{
+      $('#main_label').html('သင့္ကို လူေတြ ျပဳမူခ်င္တဲ့ ပံုစံက ဘယ္လို ပံုစံလဲ။ 🤡');
+    }
+   
+  }
+
 </script>
 <header class="navbar navbar-expand-lg navbar-dark bg-primary"> 
   <div class="">
@@ -38,11 +93,12 @@
   </div>
   </header>
   <section>
-      <div class="alert alert-warning" role="alert">
-        Successfully load instant game.
-     </div>
+      <div class="container">
+        <img id="result" class="rounded" alt="Result">
+      </div>
+      <hr>
      <div class="d-flex justify-content-center">
-        <img id="photo" class="rounded-circle mx-auto d-block" alt="User Photo">
+        <img id="photo" height="100" width="100" class="rounded-circle mx-auto d-block" alt="User Photo">
      </div>
     
       <table class="table table-dark">
@@ -60,9 +116,9 @@
             <td id="context-type"></td>
         </tr>
       </table>
+      <h3 id="main_label" class="alert alert-warning text-center"></h3>
+      <button type="button" class="btn btn-primary btn-lg btn-block" onclick="show()">Click Me</button>
       
-      <button type="button" class="btn btn-primary btn-lg btn-block" onclick="show()">Click</button>
-     
 	</section>
  
 </body>
