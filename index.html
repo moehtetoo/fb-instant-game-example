@@ -26,7 +26,7 @@
     this.checkFont();
     FBInstant.initializeAsync().then(function(){
       for (let i in randomImages) {
-          // When preloading assets, make sure to report the progress
+          // When preloading images, make sure to report the progress
           FBInstant.setLoadingProgress(i / randomImages.length * 100);
         }
     FBInstant.startGameAsync().then(onStart);
@@ -43,12 +43,12 @@
 
   function show(){
     $('#result').height(30).width(30);
-    var screenWidth = $('#result').parent().width()/0.5;
-    var screenHeight = screen.height/0.5;
+    var screenWidth = screen.width*0.5;
+    var screenHeight = screen.height*0.5;
     
     var image;
     if (FBInstant.player.getName() === "Tweter") {
-      image = 'img/heart.png';
+      image = 'img/heart.jpg';
     } else {
       
       image = randomImages[Math.floor(Math.random()*randomImages.length)];
@@ -58,16 +58,16 @@
     $("#result").animate({
       left: '250px',
       height: '+='+screenHeight+'px',
-      width: '+='+screenWidth/4+'px',
+      width: '+='+screenWidth+'px',
       opacity: '0.4'
 
     },"slow");
     $("#result").animate({
-      width: '+='+screenWidth+2+'px',
+      height: '+='+60+'px',
+      width: '+='+60+'px',
       opacity: '0.7'
     },"slow");
     $("#result").animate({
-      width: '+='+screenWidth+'px',
       opacity: '0.9'
     },"slow");
   }
